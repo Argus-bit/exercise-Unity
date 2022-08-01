@@ -80,13 +80,13 @@ public class Player : MonoBehaviour
 		myRigidbody.velocity = Vector2.up * forceJump;
 		myRigidbody.transform.localScale = Vector2.one;
 		DOTween.Kill(myRigidbody.transform);
-		HadleScaleJump();
+		/*HadleScaleJump();*/
 		}
 	}
 
-    private void HadleScaleJump()
+   /* private void HadleScaleJump()
     {
 		myRigidbody.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
 		myRigidbody.transform.DOScaleY(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
-	}
+	}*/
 }
