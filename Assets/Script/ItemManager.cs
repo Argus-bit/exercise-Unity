@@ -1,25 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using EBAC.Core.Singleton;
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : Singleton<ItemManager>
 {
-    public static ItemManager Instance;
-    public int coins;
+    public SOint coins;
+    public TextMeshProUGUI uiTextCoins;
+    public TextMeshProUGUI uiTextFruit;
 
-    private void Awake()
+    private void Start()
+    {
+        Reset();
+    }
+
+    /*private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else Destroy(gameObject);
-        Reset();
-    }
+    }*/
     private void Reset()
     {
-        coins = 0;
+        coins.value = 0;
+        coins.fruit = 0;
+        UpdateUI();
     }
     public void AddCoins(int amount = 1)
     {
-        coins += amount;
+        coins.value += amount;
+        UpdateUI();
+    }
+    public void AddSberry(int amount = 1)
+    {
+        coins.fruit += amount;
+        UpdateUI();
+    }
+    private void UpdateUI()
+    {
+        //uiTextCoins.text = coins.value.ToString();
+        //UiInGameManager.UpdateTextCoins(coins.value.ToString());
     }
 }
