@@ -16,10 +16,30 @@ public class Player : MonoBehaviour
 	[Header("Animation player")]
 	public string triggerRun = "Run";
 
+	[Header("Jump Collision Check")]
+	public Collider2D collider2D;
+	public float distToGround;
+	public float spaceToGround = 1;
+	public ParticleSystem jumpVFX;
 
-
-    private void Update()
+	public void Awake()
 	{
+		if (collider2D != null)
+		{
+			distToGround = collider2D.bounds.extents.y;
+		}
+	}
+
+	private bool IsGrounded()
+	{
+		Debug.DrawRay(transform.position, -Vector2.up, Color.magenta, distToGround + spaceToGround);
+		return Physics2D.Raycast(transform.position, -Vector2.up, distToGround + spaceToGround);
+	}
+
+
+	private void Update()
+	{
+		IsGrounded();
 		HandleMoviment();
 		HandleJump();
 	}
@@ -36,10 +56,10 @@ public class Player : MonoBehaviour
 		if (Input.GetKey(KeyCode.LeftArrow))
 		{
 			myRigidbody.velocity = new Vector2(-_currentSpeed, myRigidbody.velocity.y);
-			if(myRigidbody.transform.localScale.x != -1)
+			if (myRigidbody.transform.localScale.x != -1)
 			{
 				myRigidbody.transform.DOScaleX(-1, .1f);
-            }
+			}
 			_currentPlayer.SetBool(triggerRun, true);
 		}
 
@@ -52,7 +72,7 @@ public class Player : MonoBehaviour
 			}
 			_currentPlayer.SetBool(triggerRun, true);
 		}
-		else 
+		else
 		{
 			_currentPlayer.SetBool(triggerRun, false);
 		}
@@ -69,13 +89,20 @@ public class Player : MonoBehaviour
 
 	private void HandleJump()
 	{
-        if (Input.GetKey(KeyCode.Space)) {
-		myRigidbody.velocity = Vector2.up * soPlayerSetup.forceJump;
-		myRigidbody.transform.localScale = Vector2.one;
-		DOTween.Kill(myRigidbody.transform);
-		HadleScaleJump();
+		if (Input.GetKey(KeyCode.Space) && IsGrounded())
+		{
+			myRigidbody.velocity = Vector2.up * soPlayerSetup.forceJump;
+			myRigidbody.transform.localScale = Vector2.one;
+			DOTween.Kill(myRigidbody.transform);
+			HadleScaleJump();
+			PlayJumpVFX();
 		}
 	}
+	private void PlayJumpVFX ()
+	{
+		if (jumpVFX != null) jumpVFX.Play();
+	}
+
 
     private void HadleScaleJump()
     {
