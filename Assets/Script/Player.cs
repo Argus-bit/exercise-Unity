@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
 	public float spaceToGround = 1;
 	public ParticleSystem jumpVFX;
 
+	[Header("Sound")]
+	public AudioSource audioSource;
+
 	public void Awake()
 	{
 		if (collider2D != null)
@@ -96,6 +99,7 @@ public class Player : MonoBehaviour
 			DOTween.Kill(myRigidbody.transform);
 			HadleScaleJump();
 			PlayJumpVFX();
+			Play();
 		}
 	}
 	private void PlayJumpVFX ()
@@ -108,5 +112,9 @@ public class Player : MonoBehaviour
     {
 		myRigidbody.transform.DOScaleY(soPlayerSetup.jumpScaleY, soPlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(soPlayerSetup.ease);
 		myRigidbody.transform.DOScaleY(soPlayerSetup.jumpScaleX, soPlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(soPlayerSetup.ease);
+	}
+	public void Play()
+	{
+		audioSource.Play();
 	}
 }
